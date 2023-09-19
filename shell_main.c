@@ -11,6 +11,7 @@ int processFileCommands(const char *filename)
 	char *input = NULL;
 	size_t input_size = 0;
 	FILE *file = fopen(filename, "r");
+	char *command_with_variables = NULL;
 
 	if (file == NULL)
 	{
@@ -25,11 +26,18 @@ int processFileCommands(const char *filename)
 			input[strlen(input) - 1] = '\0';
 		}
 
-		char *command_with_variables = replace_variables(input);
+		if (command_with_variables != NULL)
+		{
+			free(command_with_variables);
+			command_with_variables = NULL;
+		}
+
+		command_with_variables = replace_variables(input);
 
 		execute_command(command_with_variables);
 
 		free(command_with_variables);
+		command_with_variables = NULL;
 	}
 
 	fclose(file);
@@ -80,6 +88,26 @@ void processInteractiveShell(void)
 }
 
 /**
+ * cleanupAliases - Cleanup the alias list
+ *
+ * This function frees the memory associated with the alias list.
+ */
+void cleanupAliases(void)
+{
+	struct Alias *current = alias_list;
+	struct Alias *temp = current;
+
+	while (current != NULL)
+	{
+		current = current->next;
+		free(temp->name);
+		free(temp->value);
+		free(temp);
+	}
+	alias_list = NULL;
+}
+
+/**
  * main - The main function of the shell
  * @argc: The number of command-line arguments
  * @argv: An array of command-line argument strings
@@ -88,13 +116,16 @@ void processInteractiveShell(void)
  */
 int main(int argc, char *argv[])
 {
+	int result;
+
 	if (argc == 2)
 	{
-		return (processFileCommands(argv[1]));
+		result = processFileCommands(argv[1]);
 	}
 	else if (argc == 1)
 	{
 		processInteractiveShell();
+		result = EXIT_SUCCESS;
 	}
 	else
 	{
@@ -103,5 +134,5 @@ int main(int argc, char *argv[])
 	}
 
 	cleanupAliases();
-	return (EXIT_SUCCESS);
+	return (result);
 }

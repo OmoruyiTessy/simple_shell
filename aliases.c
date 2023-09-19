@@ -21,10 +21,11 @@ void print_aliases(void)
 void print_specific_aliases(char *names[], int name_count)
 {
 	struct Alias *current = alias_list;
+	int i;
 
 	while (current != NULL)
 	{
-		for (int i = 0; i < name_count; i++)
+		for (i = 0; i < name_count; i++)
 		{
 			if (strcmp(current->name, names[i]) == 0)
 			{
@@ -65,4 +66,41 @@ void add_alias(char *name, char *value)
 	new_alias->value = strdup(value);
 	new_alias->next = alias_list;
 	alias_list = new_alias;
+}
+
+/**
+ * handleAliasCommand - This Handle the "alias" command
+ * @input: The input command line
+ *
+ * This function is responsible for processing and adding aliases based on the
+ * input command line.
+ */
+void handleAliasCommand(char *input)
+{
+	char *name = strtok(input + 6, "=");
+	char *value = strtok(NULL, "=");
+
+	if (name != NULL && value != NULL)
+	{
+		add_alias(name, value);
+	}
+	else
+	{
+		printf("Usage: alias name=value\n");
+	}
+}
+
+/**
+ * executeInputCommand - Execute a regular input command
+ * @input: The input command line
+ *
+ * This function is responsible for executing regular input
+ * commands (not aliases).
+ */
+void executeInputCommand(char *input)
+{
+	char *command_with_variables = replace_variables(input);
+
+	execute_command(command_with_variables);
+	free(command_with_variables);
 }
