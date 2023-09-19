@@ -36,9 +36,9 @@ int processFileCommands(const char *filename)
 			command_with_variables = NULL;
 		}
 
-		command_with_variables = replace_variables(input, &last_exit_status);
+		command_with_variables = replace_variables(input, last_exit_status);
 
-		execute_command(command_with_variables, &last_exit_status);
+		execute_command(command_with_variables, last_exit_status);
 
 		free(command_with_variables);
 		command_with_variables = NULL;
@@ -58,8 +58,9 @@ int processFileCommands(const char *filename)
  * user to enter commands
  *
  * @alias_list: A pointer to the alias list.
+ * @last_exit_status: pointer to the last exit status variable
  */
-void processInteractiveShell(struct Alias **alias_list)
+void processInteractiveShell(struct Alias **alias_list, int *last_exit_status)
 {
 	char *input = NULL;
 	size_t input_size = 0;
@@ -84,11 +85,11 @@ void processInteractiveShell(struct Alias **alias_list)
 
 		if (strncmp(input, "alias", 5) == 0)
 		{
-			handleAliasCommand(input, &alias_list);
+			handleAliasCommand(input, alias_list, last_exit_status);
 		}
 		else
 		{
-			executeInputCommand(input, &alias_list, &last_exit_status);
+			executeInputCommand(input, alias_list, last_exit_status);
 		}
 	}
 
@@ -130,14 +131,16 @@ int main(int argc, char *argv[])
 {
 	int result;
 	struct Alias *alias_list = NULL;
+	int last_exit_status = 0;
 
 	if (argc == 2)
 	{
-		result = processFileCommands(argv[1], &alias_list);
+		result = processFileCommands(argv[1], &alias_list,
+				&last_exit_status);
 	}
 	else if (argc == 1)
 	{
-		processInteractiveShell(&alias_list);
+		processInteractiveShell(&alias_list, &last_exit_status);
 		result = EXIT_SUCCESS;
 	}
 	else

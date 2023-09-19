@@ -79,14 +79,16 @@ void add_alias(struct Alias **alias_list, char *name, char *value)
 }
 
 /**
- * handleAliasCommand - This Handle the "alias" command
+ * handleAliasCommand - This Handle the alias command
  * @input: The input command line
  * @alias_list: pointer to alias list
+ * @last_exit_status: pointer to the last exit status variable
  *
  * This function is responsible for processing and adding aliases based on the
  * input command line.
  */
-void handleAliasCommand(char *input, struct Alias **alias_list)
+void handleAliasCommand(char *input, struct Alias **alias_list,
+		int *last_exit_status)
 {
 	char *name = strtok(input + 6, "=");
 	char *value = strtok(NULL, "=");
@@ -99,6 +101,17 @@ void handleAliasCommand(char *input, struct Alias **alias_list)
 	{
 		printf("Usage: alias name=value\n");
 	}
+
+	if (strncmp(input, "alias", 5) == 0)
+	{
+		char *name, *value;
+
+		parseAliasCommand(input, &name, &value);
+		add_alias(alias_list, name, value);
+		free(name);
+		free(value);
+	}
+
 }
 
 /**
@@ -113,8 +126,8 @@ void handleAliasCommand(char *input, struct Alias **alias_list)
 void executeInputCommand(char *input, struct Alias **alias_list,
 		int *last_exit_status)
 {
-	char *command_with_variables = replace_variables(input);
+	char *command_with_variables = replace_variables(input, last_exit_status);
 
-	execute_command(command_with_variables);
+	execute_command(command_with_variables, last_exit_status);
 	free(command_with_variables);
 }

@@ -37,11 +37,13 @@ void print_aliases(struct Alias *alias_list);
 void print_specific_aliases(struct Alias *alias_list,
 		char *names[], int name_count);
 void add_alias(struct Alias **alias_list, char *name, char *value);
-void handleAliasCommand(char *input);
-void executeInputCommand(char *input);
+void handleAliasCommand(char *input, struct Alias **alias_list,
+		int *last_exit_status);
+void executeInputCommand(char *input, struct Alias **alias_list,
+		int *last_exit_status);
 
 /* variables.c */
-char *replace_variables(char *command);
+char *replace_variables(char *command, int *last_exit_status);
 
 /* execute.c */
 int execute_command(char *command, int *last_exit_status);

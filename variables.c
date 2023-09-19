@@ -28,7 +28,7 @@ char *replace_variables(char *command, int *last_exit_status)
 		}
 		else if (source[0] == '$' && source[1] == '?')
 		{
-			snprintf(destination, 10, "%d", last_exit_status);
+			snprintf(destination, 10, "%d", *last_exit_status);
 			destination += strlen(destination);
 			source += 2;
 		}

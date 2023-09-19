@@ -39,9 +39,9 @@ int execute_command(char *command, int *last_exit_status)
 		waitpid(child_pid, &status, WUNTRACED);
 		if (WIFEXITED(status))
 		{
-			last_exit_status = WEXITSTATUS(status);
+			*last_exit_status = WEXITSTATUS(status);
 		}
 	}
 
-	return (last_exit_status);
+	return (*last_exit_status);
 }
