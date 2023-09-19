@@ -2,6 +2,7 @@
 /**
  * custom_getline - Custom implementation of getline
  *
+ * This function will implement the getline
  * Return: A pointer to the line read or NULL on failure.
  */
 char *custom_getline(void)

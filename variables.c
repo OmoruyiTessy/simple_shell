@@ -2,6 +2,7 @@
 
 /**
  * replace_variables - Replace variables in a command line
+ * This function replaces variables in a command line
  * @command: The command line to process
  *
  * Return: A pointer to the new command line

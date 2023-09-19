@@ -2,6 +2,8 @@
 
 /**
  * execute_command - Execute a command
+ *
+ * This function excutes a command
  * @command: The command to execute
  *
  * Return: The exit status of the executed command

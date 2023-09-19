@@ -2,6 +2,7 @@
 
 /**
  * processFileCommands - Process commands from a file
+ *
  * This function reads and processes commands from a file with
  * the given filename.
  *

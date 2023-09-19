@@ -1,8 +1,7 @@
 #include "shell.h"
 /**
  * print_aliases - Print all aliases
- *
- * This function prints all aliases in the provided alias List
+ * This function prints all aliases
  * @alias_list: pointer to the alias list to be printed
  */
 void print_aliases(struct Alias *alias_list)

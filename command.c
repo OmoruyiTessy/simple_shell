@@ -2,6 +2,8 @@
 
 /**
  * split_command - Split a command line into arguments
+ *
+ * This function split a command line into arguments
  * @input: The input command line
  * @args: An array to store the arguments
  * @arg_count: A pointer to store the argument count
