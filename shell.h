@@ -7,11 +7,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include <stddef.h>
-#include <errno.h>
-#include <sys/stat.h>
-#include <signal.h>
-#include <fcntl.h>
 
 #define MAX_INPUT_SIZE 1024
 
