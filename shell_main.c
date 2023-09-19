@@ -2,6 +2,9 @@
 
 /**
  * processFileCommands - Process commands from a file
+ * This function reads and processes commands from a file with
+ * the given filename.
+ *
  * @filename: The name of the file containing commands
  *
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
@@ -50,8 +53,12 @@ int processFileCommands(const char *filename)
 /**
  * processInteractiveShell - Process interactive shell input
  *
+ * This function process interactive shell input, allowing the
+ * user to enter commands
+ *
+ * @alias_list: A pointer to the alias list.
  */
-void processInteractiveShell(void)
+void processInteractiveShell(struct Alias **alias_list)
 {
 	char *input = NULL;
 	size_t input_size = 0;
@@ -76,11 +83,11 @@ void processInteractiveShell(void)
 
 		if (strncmp(input, "alias", 5) == 0)
 		{
-			handleAliasCommand(input);
+			handleAliasCommand(input, alias_list);
 		}
 		else
 		{
-			executeInputCommand(input);
+			executeInputCommand(input, alias_list, &last_exit_status);
 		}
 	}
 
@@ -91,10 +98,12 @@ void processInteractiveShell(void)
  * cleanupAliases - Cleanup the alias list
  *
  * This function frees the memory associated with the alias list.
+ *
+ * @alias_list: A pointer to the alias list.
  */
-void cleanupAliases(void)
+void cleanupAliases(struct Alias **alias_list)
 {
-	struct Alias *current = alias_list;
+	struct Alias *current = *alias_list;
 	struct Alias *temp = current;
 
 	while (current != NULL)
@@ -104,27 +113,30 @@ void cleanupAliases(void)
 		free(temp->value);
 		free(temp);
 	}
-	alias_list = NULL;
+	*alias_list = NULL;
 }
 
 /**
  * main - The main function of the shell
+ *
+ * This is the main function of the shell program
+ *
  * @argc: The number of command-line arguments
  * @argv: An array of command-line argument strings
- *
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
  */
 int main(int argc, char *argv[])
 {
 	int result;
+	struct Alias *alias_list = NULL;
 
 	if (argc == 2)
 	{
-		result = processFileCommands(argv[1]);
+		result = processFileCommands(argv[1], &alias_list);
 	}
 	else if (argc == 1)
 	{
-		processInteractiveShell();
+		processInteractiveShell(&alias_list);
 		result = EXIT_SUCCESS;
 	}
 	else
@@ -133,6 +145,6 @@ int main(int argc, char *argv[])
 		return (EXIT_FAILURE);
 	}
 
-	cleanupAliases();
+	cleanupAliases(&alias_list);
 	return (result);
 }

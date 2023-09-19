@@ -14,7 +14,6 @@
 #include <fcntl.h>
 
 #define MAX_INPUT_SIZE 1024
-extern int last_exit_status;
 
 /**
  * struct Alias - Represent an alias structure
@@ -31,8 +30,7 @@ struct Alias
 };
 
 /*Declare the global alias_list variable*/
-void cleanupAliases(void);
-extern struct Alias *alias_list;
+void cleanupAliases(struct Alias **alias_list);
 
 /* Function prototypes */
 
@@ -40,9 +38,10 @@ extern struct Alias *alias_list;
 char *custom_getline(void);
 
 /* aliases.c */
-void print_aliases(void);
-void print_specific_aliases(char *names[], int name_count);
-void add_alias(char *name, char *value);
+void print_aliases(struct Alias *alias_list);
+void print_specific_aliases(struct Alias *alias_list,
+		char *names[], int name_count);
+void add_alias(struct Alias **alias_list, char *name, char *value);
 void handleAliasCommand(char *input);
 void executeInputCommand(char *input);
 
@@ -50,7 +49,7 @@ void executeInputCommand(char *input);
 char *replace_variables(char *command);
 
 /* execute.c */
-int execute_command(char *command);
+int execute_command(char *command, int *last_exit_status);
 
 /* command.c */
 void split_command(char *input, char *args[], int *arg_count);
