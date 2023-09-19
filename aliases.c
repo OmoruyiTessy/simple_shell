@@ -1,8 +1,11 @@
 #include "shell.h"
 /**
  * print_aliases - Print all aliases
+ *
+ * This function prints all aliases in the provided alias List
+ * @alias_list: pointer to the alias list to be printed
  */
-void print_aliases(void)
+void print_aliases(struct Alias *alias_list)
 {
 	struct Alias *current = alias_list;
 
@@ -15,10 +18,15 @@ void print_aliases(void)
 
 /**
  * print_specific_aliases - Print specific aliases
+ *
+ * This function prints sepcific aliases from the provided alias
+ * list based on the name provided in the name array
+ * @alias_list: pointer to the alias list to search for aliases
  * @names: An array of alias names
  * @name_count: The number of alias names in the array
  */
-void print_specific_aliases(char *names[], int name_count)
+void print_specific_aliases(struct Alias *alias_list,
+		char *names[], int name_count)
 {
 	struct Alias *current = alias_list;
 	int i;
@@ -39,13 +47,16 @@ void print_specific_aliases(char *names[], int name_count)
 
 /**
  * add_alias - Add or update an alias
+ *
+ * This function adds or update an alias in the provided alias list
+ * @alias_list: Pointer to the alias list to add/update an alias.
  * @name: The alias name
  * @value: The alias value
  */
-void add_alias(char *name, char *value)
+void add_alias(struct Alias **alias_list, char *name, char *value)
 {
-	struct Alias *current = alias_list;
-	 struct Alias *new_alias = malloc(sizeof(struct Alias));
+	struct Alias *current = *alias_list;
+	struct Alias *new_alias = malloc(sizeof(struct Alias));
 
 	while (current != NULL)
 	{
@@ -64,8 +75,8 @@ void add_alias(char *name, char *value)
 	}
 	new_alias->name = strdup(name);
 	new_alias->value = strdup(value);
-	new_alias->next = alias_list;
-	alias_list = new_alias;
+	new_alias->next = *alias_list;
+	*alias_list = new_alias;
 }
 
 /**
