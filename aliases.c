@@ -81,18 +81,19 @@ void add_alias(struct Alias **alias_list, char *name, char *value)
 /**
  * handleAliasCommand - This Handle the "alias" command
  * @input: The input command line
+ * @alias_list: pointer to alias list
  *
  * This function is responsible for processing and adding aliases based on the
  * input command line.
  */
-void handleAliasCommand(char *input)
+void handleAliasCommand(char *input, struct Alias **alias_list)
 {
 	char *name = strtok(input + 6, "=");
 	char *value = strtok(NULL, "=");
 
 	if (name != NULL && value != NULL)
 	{
-		add_alias(name, value);
+		add_alias(alias_list, name, value);
 	}
 	else
 	{
@@ -103,11 +104,14 @@ void handleAliasCommand(char *input)
 /**
  * executeInputCommand - Execute a regular input command
  * @input: The input command line
+ * @alias_list: pointer to alias list
+ * @last_exit_status: pointer to last exit status variable
  *
  * This function is responsible for executing regular input
  * commands (not aliases).
  */
-void executeInputCommand(char *input)
+void executeInputCommand(char *input, struct Alias **alias_list,
+		int *last_exit_status)
 {
 	char *command_with_variables = replace_variables(input);
 

@@ -36,9 +36,9 @@ int processFileCommands(const char *filename)
 			command_with_variables = NULL;
 		}
 
-		command_with_variables = replace_variables(input);
+		command_with_variables = replace_variables(input, &last_exit_status);
 
-		execute_command(command_with_variables);
+		execute_command(command_with_variables, &last_exit_status);
 
 		free(command_with_variables);
 		command_with_variables = NULL;
@@ -84,11 +84,11 @@ void processInteractiveShell(struct Alias **alias_list)
 
 		if (strncmp(input, "alias", 5) == 0)
 		{
-			handleAliasCommand(input, alias_list);
+			handleAliasCommand(input, &alias_list);
 		}
 		else
 		{
-			executeInputCommand(input, alias_list, &last_exit_status);
+			executeInputCommand(input, &alias_list, &last_exit_status);
 		}
 	}
 

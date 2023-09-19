@@ -4,10 +4,10 @@
  * replace_variables - Replace variables in a command line
  * This function replaces variables in a command line
  * @command: The command line to process
- *
+ * @last_exit_status: pointer to last exit status variable
  * Return: A pointer to the new command line
  */
-char *replace_variables(char *command)
+char *replace_variables(char *command, int *last_exit_status)
 {
 	char *new_command = malloc(MAX_INPUT_SIZE);
 	char *source = command;

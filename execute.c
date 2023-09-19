@@ -5,10 +5,10 @@
  *
  * This function excutes a command
  * @command: The command to execute
- *
+ * @last_exit_status: pointer to last exit status of variable
  * Return: The exit status of the executed command
  */
-int execute_command(char *command)
+int execute_command(char *command, int *last_exit_status)
 {
 	pid_t child_pid;
 	int status;
