@@ -12,6 +12,7 @@
  */
 int processFileCommands(const char *filename)
 {
+	int last_exit_status = 0;
 	char *input = NULL;
 	size_t input_size = 0;
 	FILE *file = fopen(filename, "r");
@@ -36,9 +37,9 @@ int processFileCommands(const char *filename)
 			command_with_variables = NULL;
 		}
 
-		command_with_variables = replace_variables(input, last_exit_status);
+		command_with_variables = replace_variables(input, &last_exit_status);
 
-		execute_command(command_with_variables, last_exit_status);
+		execute_command(command_with_variables, &last_exit_status);
 
 		free(command_with_variables);
 		command_with_variables = NULL;
