@@ -1,47 +1,86 @@
 #include "shell.h"
 
 /**
- * execute_command - Execute a command
+ * is_executable - Checks if a file is an executable command.
+ * @info: The info struct.
+ * @path: Path to the file.
  *
- * This function excutes a command
- * @command: The command to execute
- * @last_exit_status: pointer to last exit status of variable
- * Return: The exit status of the executed command
+ * Returns: 1 if the file is an executable, 0 otherwise.
  */
-int execute_command(char *command, int *last_exit_status)
+int is_executable(info_t *info, char *path)
 {
-	pid_t child_pid;
-	int status;
+    struct stat st;
 
-	char *args[MAX_INPUT_SIZE];
-	int arg_count = 0;
+    (void)info;
+    if (!path || stat(path, &st))
+        return (0);
 
-	split_command(command, args, &arg_count);
+    if (st.st_mode & S_IFREG)
+    {
+        return (1);
+    }
+    return (0);
+}
 
-	child_pid = fork();
+/**
+ * extract_chars - Extracts characters from a string based on indices.
+ * @source: The source string.
+ * @start: The starting index.
+ * @stop: The stopping index.
+ *
+ * Returns: A pointer to a new buffer containing the extracted characters.
+ */
+char *extract_chars(char *source, int start, int stop)
+{
+    static char buffer[1024];
+    int i = 0, k = 0;
 
-	if (child_pid == -1)
-	{
-		perror("fork");
-		exit(EXIT_FAILURE);
-	}
+    for (k = 0, i = start; i < stop; i++)
+        if (source[i] != ':')
+            buffer[k++] = source[i];
+    buffer[k] = '\0';
+    return (buffer);
+}
 
-	if (child_pid == 0)
-	{
-		if (execve(args[0], args, NULL) == -1)
-		{
-			perror("execve");
-			exit(EXIT_FAILURE);
-		}
-	}
-	else
-	{
-		waitpid(child_pid, &status, WUNTRACED);
-		if (WIFEXITED(status))
-		{
-			*last_exit_status = WEXITSTATUS(status);
-		}
-	}
+/**
+ * find_executable_in_path - Finds the full path of a command in the PATH environment.
+ * @info: The info struct.
+ * @pathstr: The PATH environment variable string.
+ * @cmd: The command to find.
+ *
+ * Returns: The full path of the command if found, or NULL if not found.
+ */
+char *find_executable_in_path(info_t *info, char *pathstr, char *cmd)
+{
+    int i = 0, curr_pos = 0;
+    char *path;
 
-	return (*last_exit_status);
+    if (!pathstr)
+        return NULL;
+    if ((_strlen(cmd) > 2) && starts_with(cmd, "./"))
+    {
+        if (is_executable(info, cmd))
+            return (cmd);
+    }
+    while (1)
+    {
+        if (!pathstr[i] || pathstr[i] == ':')
+        {
+            path = extract_chars(pathstr, curr_pos, i);
+            if (!*path)
+                _strcat(path, cmd);
+            else
+            {
+                _strcat(path, "/");
+                _strcat(path, cmd);
+            }
+            if (is_executable(info, path))
+                return path;
+            if (!pathstr[i])
+                break;
+            curr_pos = i;
+        }
+        i++;
+    }
+    return (NULL);
 }
