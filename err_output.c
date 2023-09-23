@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * str_to_int - converts a string to an integer
  * @s: the string to be converted
@@ -27,7 +26,6 @@ int str_to_int(char *s)
 	}
 	return (result);
 }
-
 /**
  * print_custom_error - prints a custom error message
  * @info: the parameter & return info struct
@@ -43,8 +41,6 @@ void print_custom_error(info_t *info, char *error_str)
 	shell_puts(": ");
 	shell_puts(error_str);
 }
-
-
 /**
  * shell_print_d - prints a decimal (integer) number (base 10)
  * @input: the input number
@@ -80,10 +76,8 @@ int shell_print_d(int input, int fd)
 	}
 	putchar_func('0' + current);
 	count++;
-
 	return (count);
 }
-
 /**
  * int_to_str - converts an integer to a string
  * @num: the integer to convert
@@ -108,18 +102,14 @@ char *int_to_str(long int num, int base, int flags)
 	array = flags & CONVERT_LOWERCASE ? "0123456789abcdef" : "0123456789ABCDEF";
 	ptr = &buffer[49];
 	*ptr = '\0';
-
-	do
-	{
+	do {
 		*--ptr = array[n % base];
 		n /= base;
 	} while (n != 0);
-
 	if (sign)
 		*--ptr = sign;
 	return (ptr);
 }
-
 /**
  * remove_comment - replaces the first instance of '#' with '\0'
  * @buf: address of the string to modify

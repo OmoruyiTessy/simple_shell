@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * is_interactive - checks if the shell is in interactive mode
  * @info: a pointer to the info struct
@@ -10,7 +9,6 @@ int is_interactive(info_t *info)
 {
 	return (isatty(STDIN_FILENO) && info->readfd <= 2);
 }
-
 /**
  * is_delimiter - checks if a character is a delimiter
  * @c: the character to check
@@ -28,7 +26,6 @@ int is_delimiter(char c, char *delim)
 	}
 	return (0);
 }
-
 /**
  * is_alphabetic - checks if a character is alphabetic
  * @c: the character to check
@@ -42,7 +39,6 @@ int is_alphabetic(int c)
 	else
 		return (0);
 }
-
 /**
  * string_to_integer - converts a string to an integer
  * @s: the string to be converted
@@ -75,6 +71,5 @@ int string_to_integer(char *s)
 
 		i++;
 	}
-
 	return (sign * result);
 }
