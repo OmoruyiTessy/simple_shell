@@ -1,32 +1,170 @@
 #include "shell.h"
+
 /**
- * custom_getline - Custom implementation of getline
+ * bufferInput - buffers chained commands
+ * @info: parameter struct
+ * @buf: address of buffer
+ * @len: address of len var
  *
- * This function will implement the getline
- * Return: A pointer to the line read or NULL on failure.
+ * Return: bytes read
  */
-char *custom_getline(void)
+ssize_t bufferInput(info_t *info, char **buf, size_t *len)
 {
-	char *line = NULL;
-	size_t len = 0;
-	ssize_t read;
+	ssize_t bytesRead = 0;
+	size_t len_p = 0;
 
-	read = getline(&line, &len, stdin);
-	if (read == -1)
+	if (!*len)
 	{
-		if (feof(stdin))
+		free(*buf);
+		*buf = NULL;
+		signal(SIGINT, handleCtrlC);
+		if (USE_GETLINE)
 		{
-			free(line);
-			return (NULL);
+			bytesRead = getline(buf, &len_p, stdin);
 		}
-		perror("getline");
-		free(line);
-		exit(EXIT_FAILURE);
+		else
+		{
+			bytesRead = custom_getline(info, buf, &len_p);
+		}
+
+		if (bytesRead > 0)
+		{
+			if ((*buf)[bytesRead - 1] == '\n')
+			{
+				(*buf)[bytesRead - 1] = '\0';
+				bytesRead--;
+			}
+			info->linecount_flag = 1;
+			removeComments(*buf);
+			buildHistoryList(info, *buf, info->histcount++);
+			*len = bytesRead;
+			info->cmd_buf = buf;
+		}
 	}
-	if (line[read - 1] == '\n')
+	return (bytesRead);
+}
+
+/**
+ * getInput - gets a line minus the newline
+ * @info: parameter struct
+ *
+ * Return: bytes read
+ */
+ssize_t getInput(info_t *info)
+{
+	static char *buf;
+	static size_t i, j, len;
+	ssize_t bytesRead = 0;
+	char **buf_p = &(info->arg), *p;
+
+	_putchar(BUF_FLUSH);
+	bytesRead = bufferInput(info, &buf, &len);
+	if (bytesRead == -1) /* EOF */
+		return (-1);
+	if (len)
 	{
-		line[read - 1] = '\0';
+		j = i;
+		p = buf + i;
+
+		checkCommandChain(info, buf, &j, i, len);
+		while (j < len)
+		{
+			if (isCommandChain(info, buf, &j))
+				break;
+			j++;
+		}
+
+		i = j + 1;
+		if (i >= len)
+		{
+			i = len = 0;
+			info->cmd_buf_type = CMD_NORM;
+		}
+
+		*buf_p = p;
+		return (customStrlen(p));
 	}
 
-	return (line);
+	*buf_p = buf;
+	return (bytesRead);
+}
+
+/**
+ * readBuffer - reads a buffer
+ * @info: parameter struct
+ * @buf: buffer
+ * @i: size
+ *
+ * Return: bytesRead
+ */
+ssize_t readBuffer(info_t *info, char *buf, size_t *i)
+{
+	ssize_t bytesRead = 0;
+
+	if (*i)
+		return (0);
+	bytesRead = read(info->readfd, buf, READ_BUF_SIZE);
+	if (bytesRead >= 0)
+		*i = bytesRead;
+	return (bytesRead);
+}
+
+/**
+ * custom_getline - gets the next line of input from STDIN
+ * @info: parameter struct
+ * @ptr: address of pointer to buffer, preallocated or NULL
+ * @length: size of preallocated ptr buffer if not NULL
+ *
+ * Return: bytesRead
+ */
+int custom_getline(info_t *info, char **ptr, size_t *length)
+{
+	static char buf[READ_BUF_SIZE];
+	static size_t i, len;
+	size_t k;
+	ssize_t bytesRead = 0, totalBytesRead = 0;
+	char *p = NULL, *new_p = NULL, *c;
+
+	p = *ptr;
+	if (p && length)
+		totalBytesRead = *length;
+	if (i == len)
+		i = len = 0;
+
+	bytesRead = readBuffer(info, buf, &len);
+	if (bytesRead == -1 || (bytesRead == 0 && len == 0))
+		return (-1);
+
+	c = custom_strchr(buf + i, '\n');
+	k = c ? 1 + (unsigned int)(c - buf) : len;
+	new_p = custom_realloc(p, totalBytesRead, p ? totalBytesRead + k : k + 1);
+	if (!new_p)
+		return (p ? (free(p), -1) : -1);
+
+	if (totalBytesRead)
+		custom_strncat(new_p, buf + i, k - i);
+	else
+		custom_strncpy(new_p, buf + i, k - i + 1);
+
+	totalBytesRead += k - i;
+	i = k;
+	p = new_p;
+
+	if (length)
+		*length = totalBytesRead;
+	*ptr = p;
+	return (totalBytesRead);
+}
+
+/**
+ * handleCtrlC - Blocks Ctrl-C
+ * @sigNum: the signal number
+ *
+ * Return: void
+ */
+void handleCtrlC(__attribute__((unused))int sigNum)
+{
+	_puts("\n");
+	_puts("$ ");
+	_putchar(BUF_FLUSH);
 }

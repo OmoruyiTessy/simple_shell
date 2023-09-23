@@ -1,126 +1,132 @@
 #include "shell.h"
-/**
- * print_aliases - This print all aliases
- * This function prints all aliases
- * @alias_list: this is pointer to the alias list to be printed
- */
-void print_aliases(struct Alias *alias_list)
-{
-	struct Alias *current = alias_list;
 
-	while (current != NULL)
-	{
-		printf("%s='%s'\n", current->name, current->value);
-		current = current->next;
-	}
+/**
+ * shell_history - displays the history list, one command per line,
+ * preceded with line numbers, starting at 0.
+ * @info: Structure containing potential arguments.
+ *
+ * Return: it will always 0
+ */
+int shell_history(info_t *info)
+{
+	print_list(info->history);
+	return (0);
 }
 
 /**
- * print_specific_aliases - This print specific aliases
+ * unset_shell_alias - unsets a shell alias
+ * @info: Parameter struct.
+ * @alias_str: The alias string to unset.
  *
- * This function prints sepcific aliases from the provided alias
- * list based on the name provided in the name array
- * @alias_list: pointer to the alias list to search for aliases
- * @names: An array of alias names
- * @name_count: The number of alias names in the array
+ * Return: 0 on success, 1 on error.
  */
-void print_specific_aliases(struct Alias *alias_list,
-		char *names[], int name_count)
+int unset_shell_alias(info_t *info, char *alias_str)
 {
-	struct Alias *current = alias_list;
+	char *equal_sign, temp_char;
+	int ret;
+
+	equal_sign = _strchr(alias_str, '=');
+	if (!equal_sign)
+		return (1);
+
+	temp_char = *equal_sign;
+	*equal_sign = '\0';
+
+	ret = delete_node_at_index(&(info->alias),
+		get_node_index(info->alias, node_starts_with(info->alias,
+				alias_str, -1)));
+
+	*equal_sign = temp_char;
+
+	return (ret);
+}
+
+/**
+ * set_shell_alias - sets a shell alias
+ * @info: Parameter struct.
+ * @alias_str: The alias string to set.
+ *
+ * Return: 0 on success, 1 on error.
+ */
+int set_shell_alias(info_t *info, char *alias_str)
+{
+	char *equal_sign;
+
+	equal_sign = _strchr(alias_str, '=');
+	if (!equal_sign)
+		return (1);
+
+	if (!*++equal_sign)
+		return (unset_shell_alias(info, alias_str));
+
+	unset_shell_alias(info, alias_str);
+
+	return (add_node_end(&(info->alias), alias_str, 0) == NULL);
+}
+
+/**
+ * print_shell_alias - prints a shell alias string
+ * @node: The alias node.
+ *
+ * Return: 0 on success, 1 on error.
+ */
+int print_shell_alias(list_t *node)
+{
+	char *equal_sign, *alias;
+
+	if (node)
+	{
+		equal_sign = _strchr(node->str, '=');
+		alias = node->str;
+
+		while (alias <= equal_sign)
+			_putchar(*alias++);
+
+		_putchar('\'');
+		_puts(equal_sign + 1);
+		_puts("'\n");
+
+		return (0);
+	}
+
+	return (1);
+}
+
+/**
+ * shell_alias - mimics the alias builtin (man alias)
+ * @info: Structure containing potential arguments.
+ *
+ * Return: it will always 0
+ */
+int shell_alias(info_t *info)
+{
 	int i;
+	char *equal_sign, *alias_str;
+	list_t *node = NULL;
 
-	while (current != NULL)
+	if (info->argc == 1)
 	{
-		for (i = 0; i < name_count; i++)
+		node = info->alias;
+		while (node)
 		{
-			if (strcmp(current->name, names[i]) == 0)
-			{
-				printf("%s='%s'\n", current->name, current->value);
-				break;
-			}
+			print_shell_alias(node);
+			node = node->next;
 		}
-		current = current->next;
+		return (0);
 	}
-}
 
-/**
- * add_alias - Add or update an alias
- *
- * This function adds or update an alias in the provided alias list
- * @alias_list: Pointer to the alias list to add/update an alias.
- * @name: The alias name
- * @value: The alias value
- */
-void add_alias(struct Alias **alias_list, char *name, char *value)
-{
-	struct Alias *current = *alias_list;
-	struct Alias *new_alias = malloc(sizeof(struct Alias));
-
-	while (current != NULL)
+	for (i = 1; info->argv[i]; i++)
 	{
-		if (strcmp(current->name, name) == 0)
-		{
-			free(current->value);
-			current->value = strdup(value);
-			return;
-		}
-		current = current->next;
-	}
-	if (new_alias == NULL)
-	{
-		perror("malloc");
-		exit(EXIT_FAILURE);
-	}
-	new_alias->name = strdup(name);
-	new_alias->value = strdup(value);
-	new_alias->next = *alias_list;
-	*alias_list = new_alias;
-}
+		equal_sign = _strchr(info->argv[i], '=');
+		alias_str = info->argv[i];
 
-/**
- * handleAliasCommand - This Handle the alias command
- * @input: The input command line
- * @alias_list: pointer to alias list
- *
- * This function is responsible for processing and adding aliases based on the
- * input command line.
- */
-void handleAliasCommand(char *input, struct Alias **alias_list)
-{
-	char *name, *value;
-	char *token = strtok(input + 6, "=");
+		if (equal_sign)
+			set_shell_alias(info, alias_str);
+		else
+			print_shell_alias(node_starts_with(info->alias,
+						alias_str, '='));
 
-	name = value = NULL;
-
-	if (token != NULL)
-	{
-		name = strdup(token);
-		value = strdup(strtok(NULL, "="));
 	}
 
-	if (name != NULL && value != NULL)
-	{
-		add_alias(alias_list, name, value);
-	}
-	else
-	{
-		printf("Usage: alias name=value\n");
-	}
-}
-
-/**
- * executeInputCommand - Execute a regular input command
- * @input: The input command line
- * @alias_list: pointer to alias list
- *
- * This function is responsible for executing regular input
- * commands (not aliases).
- */
-void executeInputCommand(char *input, struct Alias **alias_list)
-{
-	char *command_with_variables = replace_variables(input, NULL);
-
-	execute_command(command_with_variables, NULL);
-	free(command_with_variables);
+	return (0);
 }
