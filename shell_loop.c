@@ -18,7 +18,7 @@ int shell_lp(info_t *info, char **av)
 		if (is_interactive(info))
 			custom_puts("$ ");
 		shell_putchar(BUF_FLUSH);
-		input_result = get_input(info);
+		input_result = getInput(info);
 		if (input_result != -1)
 		{
 			set_info(info, av);

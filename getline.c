@@ -10,7 +10,7 @@
  */
 ssize_t bufferInput(info_t *info, char **buf, size_t *len)
 {
-	ssize_t bytesRead = 0;
+	ssize_t r = 0;
 	size_t len_p = 0;
 
 	if (!*len)
@@ -20,28 +20,28 @@ ssize_t bufferInput(info_t *info, char **buf, size_t *len)
 		signal(SIGINT, handleCtrlC);
 		if (USE_GETLINE)
 		{
-			bytesRead = getline(buf, &len_p, stdin);
+			r = getline(buf, &len_p, stdin);
 		}
 		else
 		{
-			bytesRead = custom_getline(info, buf, &len_p);
+			r = custom_getline(info, buf, &len_p);
 		}
 
-		if (bytesRead > 0)
+		if (r > 0)
 		{
-			if ((*buf)[bytesRead - 1] == '\n')
+			if ((*buf)[r - 1] == '\n')
 			{
-				(*buf)[bytesRead - 1] = '\0';
-				bytesRead--;
+				(*buf)[r - 1] = '\0';
+				r--;
 			}
 			info->linecount_flag = 1;
 			remove_comment(*buf);
 			build_history_list(info, *buf, info->histcount++);
-			*len = bytesRead;
+			*len = r;
 			info->cmd_buf = buf;
 		}
 	}
-	return (bytesRead);
+	return (r);
 }
 
 /**
@@ -54,12 +54,12 @@ ssize_t getInput(info_t *info)
 {
 	static char *buf;
 	static size_t i, j, len;
-	ssize_t bytesRead = 0;
+	ssize_t r = 0;
 	char **buf_p = &(info->arg), *p;
 
 	custom_putchar(BUF_FLUSH);
-	bytesRead = bufferInput(info, &buf, &len);
-	if (bytesRead == -1) /* EOF */
+	r = bufferInput(info, &buf, &len);
+	if (r == -1)
 		return (-1);
 	if (len)
 	{
@@ -86,7 +86,7 @@ ssize_t getInput(info_t *info)
 	}
 
 	*buf_p = buf;
-	return (bytesRead);
+	return (r);
 }
 
 /**

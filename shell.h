@@ -151,7 +151,7 @@ char *custom_strncat(char *, char *, int);
 char *custom_strchr(char *, char);
 
 /*getline.c */
-ssize_t get_input(info_t *);
+ssize_t getInput(info_t *);
 int custom_getline(info_t *, char **, size_t *);
 void handleCtrlC(int);
 
