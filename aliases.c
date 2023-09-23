@@ -25,7 +25,7 @@ int unset_shell_alias(info_t *info, char *alias_str)
 	char *equal_sign, temp_char;
 	int ret;
 
-	equal_sign = _strchr(alias_str, '=');
+	equal_sign = custom_strchr(alias_str, '=');
 	if (!equal_sign)
 		return (1);
 
@@ -33,7 +33,7 @@ int unset_shell_alias(info_t *info, char *alias_str)
 	*equal_sign = '\0';
 
 	ret = delete_node_at_index(&(info->alias),
-		get_node_index(info->alias, node_starts_with(info->alias,
+		custom_start_with(info->alias, node_starts_with(info->alias,
 				alias_str, -1)));
 
 	*equal_sign = temp_char;
@@ -52,7 +52,7 @@ int set_shell_alias(info_t *info, char *alias_str)
 {
 	char *equal_sign;
 
-	equal_sign = _strchr(alias_str, '=');
+	equal_sign = custom_strchr(alias_str, '=');
 	if (!equal_sign)
 		return (1);
 
@@ -76,15 +76,15 @@ int print_shell_alias(list_t *node)
 
 	if (node)
 	{
-		equal_sign = _strchr(node->str, '=');
+		equal_sign = custom_strchr(node->str, '=');
 		alias = node->str;
 
 		while (alias <= equal_sign)
-			_putchar(*alias++);
+			custom_putchar(*alias++);
 
-		_putchar('\'');
-		_puts(equal_sign + 1);
-		_puts("'\n");
+		custom_putchar('\'');
+		custom_puts(equal_sign + 1);
+		custom_puts("'\n");
 
 		return (0);
 	}
@@ -117,7 +117,7 @@ int shell_alias(info_t *info)
 
 	for (i = 1; info->argv[i]; i++)
 	{
-		equal_sign = _strchr(info->argv[i], '=');
+		equal_sign = custom_strchr(info->argv[i], '=');
 		alias_str = info->argv[i];
 
 		if (equal_sign)

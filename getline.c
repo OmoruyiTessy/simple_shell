@@ -35,8 +35,8 @@ ssize_t bufferInput(info_t *info, char **buf, size_t *len)
 				bytesRead--;
 			}
 			info->linecount_flag = 1;
-			removeComments(*buf);
-			buildHistoryList(info, *buf, info->histcount++);
+			remove_comment(*buf);
+			build_history_list(info, *buf, info->histcount++);
 			*len = bytesRead;
 			info->cmd_buf = buf;
 		}
@@ -57,7 +57,7 @@ ssize_t getInput(info_t *info)
 	ssize_t bytesRead = 0;
 	char **buf_p = &(info->arg), *p;
 
-	_putchar(BUF_FLUSH);
+	custom_putchar(BUF_FLUSH);
 	bytesRead = bufferInput(info, &buf, &len);
 	if (bytesRead == -1) /* EOF */
 		return (-1);
@@ -66,10 +66,10 @@ ssize_t getInput(info_t *info)
 		j = i;
 		p = buf + i;
 
-		checkCommandChain(info, buf, &j, i, len);
+		check_chain_continuation(info, buf, &j, i, len);
 		while (j < len)
 		{
-			if (isCommandChain(info, buf, &j))
+			if (is_chain_delimiter(info, buf, &j))
 				break;
 			j++;
 		}
@@ -82,7 +82,7 @@ ssize_t getInput(info_t *info)
 		}
 
 		*buf_p = p;
-		return (customStrlen(p));
+		return (custom_strlen(p));
 	}
 
 	*buf_p = buf;
@@ -164,7 +164,7 @@ int custom_getline(info_t *info, char **ptr, size_t *length)
  */
 void handleCtrlC(__attribute__((unused))int sigNum)
 {
-	_puts("\n");
-	_puts("$ ");
-	_putchar(BUF_FLUSH);
+	custom_puts("\n");
+	custom_puts("$ ");
+	custom_putchar(BUF_FLUSH);
 }

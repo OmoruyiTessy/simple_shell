@@ -37,18 +37,6 @@
 extern char **environ;
 
 /**
- * struct builtin - contain a builtin string and their associated function
- * @type: the builtin command flag
- * @func: pointer to the corresponding function
- */
-typedef struct builtin
-{
-	char *type;
-	int (*func)(info_t *);
-} builtin_t;
-
-
-/**
  * struct liststr - This singly linked list
  * @num: number field
  * @str: the string
@@ -110,6 +98,17 @@ typedef struct passinfo
 #define INFO_INIT \
 {NULL, 0, NULL, NULL, NULL, 0, NULL, 0, NULL, 0, NULL, 0, NULL, 0, 0, \
 		NULL, 0, 0}
+
+/**
+ * struct builtin - contain a builtin string and their associated function
+ * @type: the builtin command flag
+ * @func: pointer to the corresponding function
+ */
+typedef struct builtin
+{
+        char *type;
+        int (*func)(info_t *);
+} builtin_table;
 
 /* shell_functions.c */
 int is_interactive(info_t *);

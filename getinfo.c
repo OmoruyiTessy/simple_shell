@@ -24,13 +24,13 @@ void set_info(info_t *info, char **av)
 	info->fname = av[0];
 	if (info->arg)
 	{
-		info->argv = strtow(info->arg, " \t");
+		info->argv = custom_strtow(info->arg, " \t");
 		if (!info->argv)
 		{
 			info->argv = malloc(sizeof(char *) * 2);
 			if (info->argv)
 			{
-				info->argv[0] = _strdup(info->arg);
+				info->argv[0] = custom_strdup(info->arg);
 				info->argv[1] = NULL;
 			}
 		}
@@ -38,8 +38,8 @@ void set_info(info_t *info, char **av)
 			;
 		info->argc = i;
 
-		replace_alias(info);
-		replace_vars(info);
+		replace_aliases(info);
+		replace_variables(info);
 	}
 }
 
@@ -50,7 +50,7 @@ void set_info(info_t *info, char **av)
  */
 void free_info(info_t *info, int all)
 {
-	ffree(info->argv);
+	free_string_array(info->argv);
 	info->argv = NULL;
 	info->path = NULL;
 	if (all)
@@ -63,12 +63,12 @@ void free_info(info_t *info, int all)
 			free_list(&(info->history));
 		if (info->alias)
 			free_list(&(info->alias));
-		ffree(info->environ);
+		free_string_array(info->environ);
 		info->environ = NULL;
-		bfree((void **)info->cmd_buf);
+		free_and_null((void **)info->cmd_buf);
 
 		if (info->readfd > STDERR_FILENO)
 			close(info->readfd);
-		_putchar(BUF_FLUSH);
+		custom_putchar(BUF_FLUSH);
 	}
 }
