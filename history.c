@@ -13,13 +13,13 @@ char *get_history_file(info_t *info)
 	dir = _getenv(info, "HOME=");
 	if (!dir)
 		return (NULL);
-	buf = malloc(sizeof(char) * (_strlen(dir) + _strlen(HIST_FILE) + 2));
+	buf = malloc(sizeof(char) * (custom_strlen(dir) + custom_strlen(HISTORY_FILE) + 2));
 	if (!buf)
 		return (NULL);
 	buf[0] = '\0';
-	_strcpy(buf, dir);
-	_strcat(buf, "/");
-	_strcat(buf, HISTORY_FILE);
+	custom_strcpy(buf, dir);
+	custom_strcat(buf, "/");
+	custom_strcat(buf, HISTORY_FILE);
 	return (buf);
 }
 

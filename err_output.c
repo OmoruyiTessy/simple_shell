@@ -55,7 +55,7 @@ int shell_print_d(int input, int fd)
 	unsigned int abs_value, current;
 
 	if (fd == STDERR_FILENO)
-		putchar_func = shell_eputchar;
+		putchar_func = shell_putchar;
 	if (input < 0)
 	{
 		abs_value = -input;

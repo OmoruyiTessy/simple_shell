@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * get_environ - Returns the string array copy of our environment.
  * @info: Structure containing potential arguments.
@@ -15,14 +14,13 @@ char **get_environ(info_t *info)
 
 	return (info->environ);
 }
-
 /**
  * shell_unsetenv - Remove an environment variable.
  * @info: Structure containing potential arguments.
  * @var: The string representing the environment variable to remove.
  * Return: returns 1 if the variable was removed, 0 otherwise.
  */
-int shell_unsetenv(info_t *info, const char *var)
+int shell_unsetenv(info_t *info, char *var)
 {
 	list_t *node = info->env;
 	size_t index = 0;
@@ -40,7 +38,7 @@ int shell_unsetenv(info_t *info, const char *var)
 					index);
 			index = 0;
 			node = info->env;
-			continue
+			continue;
 		}
 		node = node->next;
 		index++;

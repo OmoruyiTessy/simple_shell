@@ -6,7 +6,7 @@
  *
  * Return: A pointer to the destination buffer.
  */
-char *custom_strcpy(char *dest, const char *src)
+char *custom_strcpy(char *dest, char *src)
 {
 	int i = 0;
 
@@ -26,7 +26,7 @@ char *custom_strcpy(char *dest, const char *src)
  *
  * Return: A pointer to the duplicated string, or NULL on failure.
  */
-char *custom_strdup(char *str)
+char *custom_strdup(const char *str)
 {
 	int length = 0;
 	char *duplicate;

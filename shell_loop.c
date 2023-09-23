@@ -62,7 +62,7 @@ int find_builtin_command(info_t *info)
 
 	for (i = 0; builtins[i].command; i++)
 	{
-		if (_strcmp(info->argv[0], builtins[i].command) == 0)
+		if (custom_strcmp(info->argv[0], builtins[i].command) == 0)
 		{
 			info->line_count++;
 			builtin_result = builtins[i].func(info);
