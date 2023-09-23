@@ -7,7 +7,7 @@
  */
 int shell_print_env(info_t *info)
 {
-	print_list_str(info->env);
+	print_list_string(info->env);
 	return (0);
 }
 
@@ -24,7 +24,7 @@ char *shell_get_env(info_t *info, const char *name)
 
 	while (node)
 	{
-		value = starts_with(node->str, name);
+		value = custom_starts_with(node->str, name);
 		if (value && *value)
 			return (value);
 		node = node->next;
@@ -42,10 +42,10 @@ int shell_set_env(info_t *info)
 {
 	if (info->argc != 3)
 	{
-		_eputs("Incorrect number of arguments\n");
+		shell_puts("Incorrect number of arguments\n");
 		return (1);
 	}
-	if (shell_update_env(info, info->argv[1], info->argv[2]))
+	if (shell_setenv(info, info->argv[1], info->argv[2]))
 		return (0);
 	return (1);
 }
@@ -61,11 +61,11 @@ int shell_unset_env(info_t *info)
 
 	if (info->argc == 1)
 	{
-		_eputs("Too few arguments.\n");
+		shell_puts("Too few arguments.\n");
 		return (1);
 	}
 	for (i = 1; i <= info->argc; i++)
-		_unset_env(info, info->argv[i]);
+		shell_unsetenv(info, info->argv[i]);
 
 	return (0);
 }

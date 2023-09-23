@@ -10,7 +10,7 @@ char *get_history_file(info_t *info)
 {
 	char *buf, *dir;
 
-	dir = _getenv(info, "HOME=");
+	dir = shell_get_env(info, "HOME=");
 	if (!dir)
 		return (NULL);
 	buf = malloc(sizeof(char) * (custom_strlen(dir) + custom_strlen(HISTORY_FILE) + 2));
@@ -44,10 +44,10 @@ int write_history(info_t *info)
 		return (-1);
 	for (node = info->history; node; node = node->next)
 	{
-		_putsfd(node->str, fd);
-		_putfd('\n', fd);
+		shell_puts_fd(node->str, fd);
+		shell_putchar_fd('\n', fd);
 	}
-	_putfd(BUF_FLUSH, fd);
+	shell_putchar_fd(BUF_FLUSH, fd);
 	close(fd);
 	return (1);
 }

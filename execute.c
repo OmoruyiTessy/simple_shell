@@ -68,11 +68,11 @@ char *find_executable_in_path(info_t *info, char *pathstr, char *cmd)
 		{
 			path = extract_chars(pathstr, curr_pos, i);
 			if (!*path)
-				_strcat(path, cmd);
+				custom_strcat(path, cmd);
 			else
 			{
-				_strcat(path, "/");
-				_strcat(path, cmd);
+				custom_strcat(path, "/");
+				custom_strcat(path, cmd);
 			}
 			if (is_executable(info, path))
 				return (path);

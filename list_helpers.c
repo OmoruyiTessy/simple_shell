@@ -41,7 +41,7 @@ char **list_to_strings(list_t *head)
 
 	for (i = 0; node; node = node->next, i++)
 	{
-		str = _strdup(node->str);
+		str = custom_strdup(node->str);
 		if (!str)
 		{
 			for (size_t j = 0; j < i; j++)
@@ -67,11 +67,11 @@ size_t print_list(const list_t *head)
 
 	while (head)
 	{
-		_puts(convert_number(head->num, 10, 0));
-		_putchar(':');
-		_putchar(' ');
-		_puts(head->str ? head->str : "(nil)");
-		_puts("\n");
+		custom_puts(int_to_str(head->num, 10, 0));
+		custom_putchar(':');
+		custom_putchar(' ');
+		custom_puts(head->str ? head->str : "(nil)");
+		custom_puts("\n");
 		head = head->next;
 		i++;
 	}
@@ -90,8 +90,8 @@ list_t *find_node_with_prefix(list_t *head, char *prefix, char c)
 {
 	while (head)
 	{
-		if (starts_with(head->str, prefix) &&
-				(c == -1 || head->str[_strlen(prefix)] == c))
+		if (custom_starts_with(head->str, prefix) &&
+				(c == -1 || head->str[custom_strlen(prefix)] == c))
 			return (head);
 		head = head->next;
 	}

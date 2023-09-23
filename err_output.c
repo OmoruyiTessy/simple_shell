@@ -35,7 +35,7 @@ void print_custom_error(info_t *info, char *error_str)
 {
 	shell_puts(info->fname);
 	shell_puts(": ");
-	print_line_number(info->line_count);
+	shell_print_d(info->line_count, STDERR_FILENO);
 	shell_puts(": ");
 	shell_puts(info->argv[0]);
 	shell_puts(": ");

@@ -16,23 +16,29 @@ int shell_lp(info_t *info, char **av)
 	{
 		clear_info(info);
 		if (is_interactive(info))
-			display_prompt();
-		_eputchar(BUF_FLUSH);
-		input_result = get_user_input(info);
+			custom_puts("$ ");
+		shell_putchar(BUF_FLUSH);
+		input_result = get_input(info);
 		if (input_result != -1)
 		{
-			set_command_info(info, av);
+			set_info(info, av);
 			builtin_result = find_builtin_command(info);
 			if (builtin_result == -1)
 				find_external_command(info);
 		}
 		else if (is_interactive(info))
-			_putchar('\n');
-		cleanup_info(info, 0);
+			custom_putchar('\n');
+		free_info(info, 0);
 	}
-	write_history_to_file(info);
-	cleanup_info(info, 1);
-	handle_noninteractive_mode(info, builtin_result);
+	write_history(info);
+	if (!is_interactive(info) && info->status)
+		exit(info->status);
+	if (builtin_result == -2)
+	{
+		if (info->err_num == -1)
+			exit(info->status);
+		exit(info->err_num);
+	}
 	return (builtin_result);
 }
 
@@ -48,21 +54,21 @@ int shell_lp(info_t *info, char **av)
 int find_builtin_command(info_t *info)
 {
 	int i, builtin_result = -1;
-	builtin_command builtins[] = {
-		{"exit", execute_exit},
-		{"env", execute_env},
-		{"help", execute_help},
-		{"history", execute_history},
-		{"setenv", execute_setenv},
-		{"unsetenv", execute_unsetenv},
-		{"cd", execute_cd},
-		{"alias", execute_alias},
+	builtin_table builtins[] = {
+		{"exit", shell_exit},
+		{"env", shell_print_env},
+		{"help", shell_help},
+		{"history", shell_history},
+		{"setenv", shell_set_env},
+		{"unsetenv", shell_unset_env},
+		{"cd", shell_cd},
+		{"alias", shell_alias},
 		{NULL, NULL}
 	};
 
-	for (i = 0; builtins[i].command; i++)
+	for (i = 0; builtins[i].type; i++)
 	{
-		if (custom_strcmp(info->argv[0], builtins[i].command) == 0)
+		if (custom_strcmp(info->argv[0], builtins[i].type) == 0)
 		{
 			info->line_count++;
 			builtin_result = builtins[i].func(info);
@@ -81,7 +87,7 @@ int find_builtin_command(info_t *info)
 void find_external_command(info_t *info)
 {
 	char *cmd_path = NULL;
-	int arg_count = count_non_empty_args(info->arg);
+	int i, j;
 
 	info->path = info->argv[0];
 	if (info->linecount_flag == 1)
@@ -90,10 +96,13 @@ void find_external_command(info_t *info)
 		info->linecount_flag = 0;
 	}
 
-	if (arg_count == 0)
+	for (i = 0, j = 0; info->arg[i]; i++)
+		if (!is_delimiter(info->arg[i], "\t\n"))
+			j++;
+	if(!j)
 		return;
 
-	cmd_path = find_command_in_path(info, _getenv(info, "PATH="),
+	cmd_path = find_executable_in_path(info, shell_get_env(info, "PATH="),
 			info->argv[0]);
 	if (cmd_path)
 	{
@@ -102,10 +111,13 @@ void find_external_command(info_t *info)
 	}
 	else
 	{
-		if (should_execute_command(info))
+		if ((is_interactive(info) || shell_get_env(info, "PATH=")
+					|| info->argv[0][0] == '/') && is_executable(info, info->argv[0]))
+			fork_and_execute_command(info);
+		else if (*(info->arg) != '\n')
 		{
 			info->status = 127;
-			print_command_not_found_error(info);
+			print_custom_error(info, "not found\n");
 		}
 	}
 }
@@ -128,9 +140,9 @@ void fork_and_execute_command(info_t *info)
 	}
 	if (child_pid == 0)
 	{
-		if (execve(info->path, info->argv, get_environment(info)) == -1)
+		if (execve(info->path, info->argv, get_environ(info)) == -1)
 		{
-			cleanup_info(info, 1);
+			free_info(info, 1);
 			if (errno == EACCES)
 				exit(126);
 			exit(1);
@@ -138,6 +150,6 @@ void fork_and_execute_command(info_t *info)
 	}
 	else
 	{
-		wait_and_set_exit_status(info);
+		print_custom_error(info, "Permission denied\n");
 	}
 }

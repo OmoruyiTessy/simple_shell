@@ -33,7 +33,7 @@ int unset_shell_alias(info_t *info, char *alias_str)
 	*equal_sign = '\0';
 
 	ret = delete_node_at_index(&(info->alias),
-		custom_start_with(info->alias, node_starts_with(info->alias,
+		get_node_index(info->alias, find_node_with_prefix(info->alias,
 				alias_str, -1)));
 
 	*equal_sign = temp_char;
@@ -123,7 +123,7 @@ int shell_alias(info_t *info)
 		if (equal_sign)
 			set_shell_alias(info, alias_str);
 		else
-			print_shell_alias(node_starts_with(info->alias,
+			print_shell_alias(find_node_with_prefix(info->alias,
 						alias_str, '='));
 
 	}

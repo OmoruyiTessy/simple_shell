@@ -6,15 +6,27 @@
  * @n: the maximum number of characters to copy
  * Return: a pointer to the destination string
  */
-char *custom_strncpy(char *dest, const char *src, size_t n)
+char *custom_strncpy(char *dest, char *src, int n)
 {
-	size_t i;
-	char *result = dest;
+	int i, j;
+	char *d = dest;
 
-	for (i = 0; i < n - 1 && src[i] != '\0'; i++)
+	i = 0;
+	while (src[i] != '\0' && i < n - 1)
+	{
 		dest[i] = src[i];
-	dest[i] = '\0';
-	return (result);
+		i++;
+	}
+	if (i < n)
+	{
+		j = i;
+		while (j < n)
+		{
+			dest[j] = '\0';
+			j++;
+		}
+	}
+	return (d);
 }
 /**
  * custom_strncat - concatenates two strings up to a specified length
@@ -23,15 +35,24 @@ char *custom_strncpy(char *dest, const char *src, size_t n)
  * @n: the maximum number of characters to concatenate
  * Return: a pointer to the destination string
  */
-char *custom_strncat(char *dest, const char *src, size_t n)
+char *custom_strncat(char *dest, char *src, int n)
 {
-	size_t dest_len = strlen(dest);
-	size_t i;
+	int i, j;
+	char *s = dest;
 
-	for (i = 0; i < n && src[i] != '\0'; i++)
-		dest[dest_len + i] = src[i];
-	dest[dest_len + i] = '\0';
-	return (dest);
+	i = 0;
+	j = 0;
+	while (dest[i] != '\0')
+		i++;
+	while (src[j] != '\0' && j < n)
+	{
+		dest[i] = src[j];
+		i++;
+		j++;
+	}
+	if (j < n)
+		dest[i] = '\0';
+	return (s);
 }
 /**
  * custom_strchr - locates a character in a string
@@ -40,7 +61,7 @@ char *custom_strncat(char *dest, const char *src, size_t n)
  * Return: a pointer to the first occurrence of the character in the string,
  *         or NULL if not found
  */
-char *custom_strchr(const char *s, int c)
+char *custom_strchr(char *s, char c)
 {
 	while (*s != '\0')
 	{

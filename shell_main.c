@@ -39,10 +39,10 @@ int main(int argc, char **argv)
 		}
 		info->readfd = fd;
 	}
-	shell_populate_env_list(&info);
+	shell_populate_env_list(info);
 
-	read_history(&info);
-	shell_lp(&info, argv);
+	read_history(info);
+	shell_lp(info, argv);
 
 	return (EXIT_SUCCESS);
 }
