@@ -28,7 +28,7 @@ char **list_to_strings(list_t *head)
 {
 	list_t *node = head;
 	size_t list_size = list_length(head);
-	size_t i;
+	size_t i, j;
 	char **strs;
 	char *str;
 
@@ -44,7 +44,7 @@ char **list_to_strings(list_t *head)
 		str = custom_strdup(node->str);
 		if (!str)
 		{
-			for (size_t j = 0; j < i; j++)
+			for (j = 0; j < i; j++)
 				free(strs[j]);
 			free(strs);
 			return (NULL);
