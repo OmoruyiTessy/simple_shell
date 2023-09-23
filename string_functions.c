@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * custom_strcpy - Copies a string from source to destination.
  * @dest: The destination buffer.
@@ -9,19 +8,18 @@
  */
 char *custom_strcpy(char *dest, const char *src)
 {
-    int i = 0;
+	int i = 0;
 
-    if (dest == src || src == NULL)
-        return dest;
-    while (src[i])
-    {
-        dest[i] = src[i];
-        i++;
-    }
-    dest[i] = '\0';
-    return dest;
+	if (dest == src || src == NULL)
+		return (dest);
+	while (src[i])
+	{
+		dest[i] = src[i];
+		i++;
+	}
+	dest[i] = '\0';
+	return (dest);
 }
-
 /**
  * custom_strdup - Duplicates a string.
  * @str: The string to duplicate.
@@ -30,21 +28,20 @@ char *custom_strcpy(char *dest, const char *src)
  */
 char *custom_strdup(char *str)
 {
-    int length = 0;
-    char *duplicate;
+	int length = 0;
+	char *duplicate;
 
-    if (str == NULL)
-        return NULL;
-    while (*str++)
-        length++;
-    duplicate = malloc(sizeof(char) * (length + 1));
-    if (!duplicate)
-        return NULL;
-    for (length++; length--;)
-        duplicate[length] = *--str;
-    return duplicate;
+	if (str == NULL)
+		return (NULL);
+	while (*str++)
+		length++;
+	duplicate = malloc(sizeof(char) * (length + 1));
+	if (!duplicate)
+		return (NULL);
+	for (length++; length--;)
+		duplicate[length] = *--str;
+	return (duplicate);
 }
-
 /**
  * custom_puts - Prints a string to stdout.
  * @str: The string to be printed.
@@ -53,34 +50,34 @@ char *custom_strdup(char *str)
  */
 void custom_puts(char *str)
 {
-    int i = 0;
+	int i = 0;
 
-    if (!str)
-        return;
-    while (str[i] != '\0')
-    {
-        custom_putchar(str[i]);
-        i++;
-    }
+	if (!str)
+		return;
+	while (str[i] != '\0')
+	{
+		custom_putchar(str[i]);
+		i++;
+	}
 }
-
 /**
  * custom_putchar - Writes a character to stdout.
  * @c: The character to print.
  *
- * Return: On success, 1. On error, -1 is returned, and errno is set appropriately.
+ * Return: On success, 1. On error, -1 is returned,
+ * and errno is set appropriately.
  */
 int custom_putchar(char c)
 {
-    static int i;
-    static char buffer[WRITE_BUF_SIZE];
+	static int i;
+	static char buffer[WRITE_BUF_SIZE];
 
-    if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
-    {
-        write(1, buffer, i);
-        i = 0;
-    }
-    if (c != BUF_FLUSH)
-        buffer[i++] = c;
-    return 1;
+	if (c == BUF_FLUSH || i >= WRITE_BUF_SIZE)
+	{
+		write(1, buffer, i);
+		i = 0;
+	}
+	if (c != BUF_FLUSH)
+		buffer[i++] = c;
+	return (1);
 }

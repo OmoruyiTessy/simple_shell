@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * custom_strncpy - copies a string up to a specified length
  * @dest: the destination string to be copied to
@@ -15,10 +14,8 @@ char *custom_strncpy(char *dest, const char *src, size_t n)
 	for (i = 0; i < n - 1 && src[i] != '\0'; i++)
 		dest[i] = src[i];
 	dest[i] = '\0';
-
-	return result;
+	return (result);
 }
-
 /**
  * custom_strncat - concatenates two strings up to a specified length
  * @dest: the destination string
@@ -34,10 +31,8 @@ char *custom_strncat(char *dest, const char *src, size_t n)
 	for (i = 0; i < n && src[i] != '\0'; i++)
 		dest[dest_len + i] = src[i];
 	dest[dest_len + i] = '\0';
-
-	return dest;
+	return (dest);
 }
-
 /**
  * custom_strchr - locates a character in a string
  * @s: the string to be searched
@@ -47,11 +42,11 @@ char *custom_strncat(char *dest, const char *src, size_t n)
  */
 char *custom_strchr(const char *s, int c)
 {
-	while (*s != '\0') {
+	while (*s != '\0')
+	{
 		if (*s == c)
 			return (s);
 		s++;
 	}
-
-	return NULL;
+	return (NULL);
 }

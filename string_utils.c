@@ -1,5 +1,4 @@
 #include "shell.h"
-
 /**
  * shell_puts - prints a string to stdout
  * @str: the string to be printed
@@ -18,7 +17,6 @@ void shell_puts(char *str)
 		i++;
 	}
 }
-
 /**
  * shell_putchar - writes a character to stderr
  * @c: The character to print
@@ -40,7 +38,6 @@ int shell_putchar(char c)
 		buf[i++] = c;
 	return (1);
 }
-
 /**
  * shell_putchar_fd - writes a character to the given file descriptor
  * @c: The character to print
@@ -63,7 +60,6 @@ int shell_putchar_fd(char c, int fd)
 		buf[i++] = c;
 	return (1);
 }
-
 /**
  * shell_puts_fd - prints a string to the given file descriptor
  * @str: the string to be printed
