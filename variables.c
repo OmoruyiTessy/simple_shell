@@ -2,9 +2,9 @@
 
 /**
  * is_chain_delimiter - Check if the current character in the
- * buffer is a chain delimiter.
- * @info: The parameter struct.
- * @buf: The character buffer.
+ * buffer is a chain delimiter for the simple shell
+ * @info: The parameter struct for the simple shell
+ * @buf: The character buffer for the simple shell
  * @p: Address of the current position in buf.
  *
  * Return: 1 if it's a chain delimiter, 0 otherwise.

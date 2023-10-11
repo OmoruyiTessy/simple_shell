@@ -1,7 +1,7 @@
 #include "shell.h"
 /**
  * free_and_null - Frees a pointer and sets it to NULL
- * @ptr: Address of the pointer to free
+ * @ptr: Address of the pointer to free simple shell
  *
  * This function frees the memory pointed to by the given pointer and
  * then sets the pointer itself to NULL to prevent a dangling pointer.

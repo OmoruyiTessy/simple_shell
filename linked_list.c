@@ -1,10 +1,9 @@
 #include "shell.h"
-
 /**
- * add_node - Adds a node to the start of the list.
- * @head: Address of pointer to head node.
- * @str: String field of the node.
- * @num: Node index used by history.
+ * add_node - Adds a node to the start of the list for the shell.
+ * @head: Address of pointer to head node for the simple shell.
+ * @str: String field of the node for the simple shell.
+ * @num: Node index used by history for the simple shell project.
  *
  * Return: Pointer to the newly added node, or NULL on failure.
  */

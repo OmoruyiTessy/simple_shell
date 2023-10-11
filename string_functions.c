@@ -1,8 +1,8 @@
 #include "shell.h"
 /**
  * custom_strcpy - Copies a string from source to destination.
- * @dest: The destination buffer.
- * @src: The source string.
+ * @dest: The destination buffer for the simple shell project.
+ * @src: The source string for the simple shell project.
  *
  * Return: A pointer to the destination buffer.
  */
@@ -21,7 +21,7 @@ char *custom_strcpy(char *dest, char *src)
 	return (dest);
 }
 /**
- * custom_strdup - Duplicates a string.
+ * custom_strdup - Duplicates a string for the simple shell project.
  * @str: The string to duplicate.
  *
  * Return: A pointer to the duplicated string, or NULL on failure.

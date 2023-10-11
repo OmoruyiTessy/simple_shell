@@ -1,8 +1,8 @@
 #include "shell.h"
 /**
  * split_string - Splits a string into words using a set of delimiters.
- * @str: The input string.
- * @delimiters: The delimiter string.
+ * @str: The input string for the simple shell.
+ * @delimiters: The delimiter string for the simple shell.
  *
  * Return: A pointer to an array of strings, or NULL on failure.
  */
