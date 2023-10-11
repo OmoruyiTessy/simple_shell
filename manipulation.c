@@ -1,6 +1,6 @@
 #include "shell.h"
 /**
- * custom_strncpy - copies a string up to a specified length
+ * custom_strncpy - This copies a string up to a specified length
  * @dest: the destination string to be copied to
  * @src: the source string
  * @n: the maximum number of characters to copy

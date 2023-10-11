@@ -37,9 +37,9 @@
 extern char **environ;
 
 /**
- * struct liststr - This singly linked list
- * @num: number field
- * @str: the string
+ * struct liststr - This is singly linked list
+ * @num: Number field
+ * @str: The string
  * @next: pointer to the next node in the list
  */
 typedef struct liststr
@@ -50,7 +50,7 @@ typedef struct liststr
 } list_t;
 
 /**
- * struct passinfo - encapsulates pseudo-arguments intended for passing
+ * struct passinfo - This encapsulates pseudo-arguments intended for passing
  * into a function, ensuring a consistent function pointer struct prototype.
  * @alias: the alias node
  * @argc: The count of arguments.

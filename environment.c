@@ -1,6 +1,6 @@
 #include "shell.h"
 /**
- * get_environ - Returns the string array copy of our environment.
+ * get_environ - returns the string array copy of our environment.
  * @info: Structure containing potential arguments.
  * Return: Pointer to the environment variables.
  */

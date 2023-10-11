@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * shell_print_env - prints the current environment
+ * shell_print_env - This prints the current environment
  * @info: Structure containing potential arguments.
  * Return: Always 0
  */

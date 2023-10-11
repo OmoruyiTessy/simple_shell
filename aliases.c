@@ -1,7 +1,7 @@
 #include "shell.h"
 
 /**
- * shell_history - displays the history list, one command per line,
+ * shell_history - This displays the history list, one command per line,
  * preceded with line numbers, starting at 0.
  * @info: Structure containing potential arguments.
  *

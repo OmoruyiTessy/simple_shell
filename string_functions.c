@@ -1,10 +1,10 @@
 #include "shell.h"
 /**
- * custom_strcpy - Copies a string from source to destination.
+ * custom_strcpy - This copies a string from source to destination.
  * @dest: The destination buffer.
  * @src: The source string.
  *
- * Return: A pointer to the destination buffer.
+ * Return: pointer to the destination buffer.
  */
 char *custom_strcpy(char *dest, char *src)
 {
@@ -24,7 +24,7 @@ char *custom_strcpy(char *dest, char *src)
  * custom_strdup - Duplicates a string.
  * @str: The string to duplicate.
  *
- * Return: A pointer to the duplicated string, or NULL on failure.
+ * Return: pointer to the duplicated string, or NULL on failure.
  */
 char *custom_strdup(const char *str)
 {

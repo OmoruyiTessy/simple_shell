@@ -1,6 +1,6 @@
 #include "shell.h"
 /**
- * shell_puts - prints a string to stdout
+ * shell_puts - This prints a string to stdout
  * @str: the string to be printed
  *
  * Return: Nothing

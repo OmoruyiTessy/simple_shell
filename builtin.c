@@ -1,6 +1,6 @@
 #include "shell.h"
 /**
- * shell_exit - exits the shell
+ * shell_exit - This exits the shell
  * @info: Structure containing potential arguments.
  *
  * Return: Exits with a given exit status, 0 if info->argv[0] != "exit"
