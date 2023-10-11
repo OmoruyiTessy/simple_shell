@@ -1,9 +1,9 @@
 #include "shell.h"
 /**
  * custom_memset - Fills a memory area with a constant byte.
- * @dest: The pointer to the memory area.
- * @byte: The byte value to fill the memory with.
- * @n: The number of bytes to fill.
+ * @dest: The pointer to the memory area for the simple.
+ * @byte: The byte value to fill the memory with for the simple shel.
+ * @n: The number of bytes to fill for the simple shell.
  * Return: A pointer to the memory area.
  */
 char *custom_memset(char *dest, char byte, unsigned int n)

@@ -1,7 +1,7 @@
 #include "shell.h"
 /**
- * custom_strlen - Returns the length of a string.
- * @str: The string to check.
+ * custom_strlen - Returns the length of a string for the simpleshell
+ * @str: The string to check for simple shell.
  *
  * Return: The length of the string.
  */
@@ -17,8 +17,8 @@ int custom_strlen(char *str)
 }
 /**
  * custom_strcmp - Compares two strings lexicographically.
- * @str1: The first string.
- * @str2: The second string.
+ * @str1: The first string for the simple shell.
+ * @str2: The second string for the simple shell.
  *
  * Return: Negative if str1 < str2, positive if str1 > str2, zero if
  * str1 == str2.
@@ -39,8 +39,8 @@ int custom_strcmp(char *str1, char *str2)
 }
 /**
  * custom_starts_with - Checks if a string starts with a substring.
- * @str: The string to search.
- * @prefix: The substring to find.
+ * @str: The string to search for the simple shell.
+ * @prefix: The substring to find for the simple shell.
  *
  * Return: Pointer to the next character of str after the
  * prefix, or NULL if not found.
@@ -56,8 +56,8 @@ char *custom_starts_with(const char *str, const char *prefix)
 }
 /**
  * custom_strcat - Concatenates two strings.
- * @dest: The destination buffer.
- * @src: The source buffer.
+ * @dest: The destination buffer for the simple shell.
+ * @src: The source buffer for the simple shell.
  *
  * Return: Pointer to the destination buffer.
  */

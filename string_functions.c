@@ -21,7 +21,7 @@ char *custom_strcpy(char *dest, char *src)
 	return (dest);
 }
 /**
- * custom_strdup - Duplicates a string.
+ * custom_strdup - Duplicates a string for the simple shell project.
  * @str: The string to duplicate.
  *
  * Return: pointer to the duplicated string, or NULL on failure.

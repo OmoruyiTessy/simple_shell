@@ -2,7 +2,7 @@
 
 /**
  * list_length - this determines the length of a linked list
- * @head: pointer to the first node of the list
+ * @head: pointer to the first node of the list for the simple shell
  *
  * Return: size of the list
  */
@@ -20,7 +20,7 @@ size_t list_length(const list_t *head)
 
 /**
  * list_to_strings - returns an array of strings from the list->str
- * @head: pointer to the first node
+ * @head: pointer to the first node for the simple shell
  *
  * Return: array of strings
  */

@@ -1,12 +1,12 @@
 #include "shell.h"
 
 /**
- * main - The main function of the shell
+ * main - The main function of the simple shell
  *
- * This is the main function of the shell program
+ * This is the main function of the simple shell program
  *
- * @argc: The number of command-line arguments
- * @argv: An array of command-line argument strings
+ * @argc: The number of command-line arguments simple shell
+ * @argv: An array of command-line argument strings simple shell
  * Return: EXIT_SUCCESS on success, EXIT_FAILURE on failure.
  */
 int main(int argc, char **argv)

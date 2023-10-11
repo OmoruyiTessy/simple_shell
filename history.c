@@ -13,7 +13,8 @@ char *get_history_file(info_t *info)
 	dir = shell_get_env(info, "HOME=");
 	if (!dir)
 		return (NULL);
-	buf = malloc(sizeof(char) * (custom_strlen(dir) + custom_strlen(HISTORY_FILE) + 2));
+	buf = malloc(sizeof(char) * (custom_strlen(dir) +
+				custom_strlen(HISTORY_FILE) + 2));
 	if (!buf)
 		return (NULL);
 	buf[0] = '\0';

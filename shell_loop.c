@@ -1,9 +1,8 @@
 #include "shell.h"
-
 /**
- * shell_lp - Main shell loop.
- * @info: Pointer to the info struct.
- * @av: Argument vector from main.
+ * shell_lp - Main shell loop for the simple shell project.
+ * @info: Pointer to the info struct for the simple shell project.
+ * @av: Argument vector from main for the simple shell project.
  *
  * Return: 0 on success, 1 on error.
  */
@@ -81,7 +80,7 @@ int find_builtin_command(info_t *info)
 
 /**
  * find_external_command - Finds and executes an external command.
- * @info: Pointer to the info struct.
+ * @info: Pointer to the info struct for simple shell project.
  *
  * Return: void.
  */
@@ -100,7 +99,7 @@ void find_external_command(info_t *info)
 	for (i = 0, j = 0; info->arg[i]; i++)
 		if (!is_delimiter(info->arg[i], "\t\n"))
 			j++;
-	if(!j)
+	if (!j)
 		return;
 
 	cmd_path = find_executable_in_path(info, shell_get_env(info, "PATH="),
