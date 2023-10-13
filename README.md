@@ -1,10 +1,10 @@
 # Simple Shell Project
 This repository hosts a collaborative project on a simple shell, developed by Tessy Ezeali and Abdulkabir Abdulwasiu. The project is scheduled for submission on October 19th, 2023.
 
-### Project Overview
+## Project Overview
 The goal of the simple shell project is to develop a fundamental command-line interface that can both read and execute user input. For developers interested in operating systems and system-level programming, this shell offers a good starting point for understanding how shells function. The shell is both an interactive command language and a scripting language and is used by the operating system to control the execution of the system using shell scripts.
 
-### Project Features
+## Project Features
 - **User Input Interpretation:** The shell interprets user input and identifies command keywords and arguments.
 - **Command Execution:** It executes the recognized commands, facilitating interaction with the underlying operating system.
 - **Collaborative Development:** Tessy Ezeali and Abdulkabir Abdulwasiu collaborate on this project, bringing together diverse skills and ideas for efficient development.
