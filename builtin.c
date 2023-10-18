@@ -46,21 +46,20 @@ int shell_cd(info_t *info)
 	{
 		dir = shell_get_env(info, "HOME=");
 		if (!dir)
-			dir = shell_get_env(info, "PWD=");
-		chdir_ret = chdir(dir ? dir : "/");
+			chdir_ret = chdir((dir = shell_get_env(info, "PWD=")) ? dir : "/");
+		else
+			chdir_ret = chdir(dir);
 	}
 	else if (custom_strcmp(info->argv[1], "-") == 0)
 	{
-		dir = shell_get_env(info, "OLDPWD=");
-		if (!dir)
+		if (!shell_get_env(info, "OLDPWD="))
 		{
 			custom_puts(s);
 			custom_putchar('\n');
 			return (1);
 		}
-		custom_puts(dir);
-		custom_putchar('\n');
-		chdir_ret = chdir(dir);
+		custom_puts(shell_get_env(info, "OLDPWD=")), custom_putchar('\n');
+		chdir_ret = chdir((dir = shell_get_env(info, "OLDPWD=")) ? dir : "/");
 	}
 	else
 	{
@@ -69,8 +68,7 @@ int shell_cd(info_t *info)
 	if (chdir_ret == -1)
 	{
 		print_custom_error(info, "can't cd to ");
-		shell_puts(info->argv[1]);
-		shell_putchar('\n');
+		shell_puts(info->argv[1]), shell_putchar('\n');
 	}
 	else
 	{
@@ -89,7 +87,7 @@ int shell_help(info_t *info)
 {
 	char **arg_array = info->argv;
 
-	custom_puts("Help information for the shell. Function not yet implemented.\n");
+	custom_puts("Help info for the shell. Function not yet implemented.\n");
 	if (arg_array)
 		custom_puts(*arg_array);
 	return (0);
