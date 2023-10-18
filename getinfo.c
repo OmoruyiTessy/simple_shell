@@ -67,7 +67,7 @@ void free_info(info_t *info, int all)
 		info->environ = NULL;
 		free_and_null((void **)info->cmd_buf);
 
-		if (info->readfd > STDERR_FILENO)
+		if (info->readfd > 2)
 			close(info->readfd);
 		custom_putchar(BUF_FLUSH);
 	}

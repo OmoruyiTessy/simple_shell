@@ -25,9 +25,9 @@ int is_chain_delimiter(info_t *info, char *buf, size_t *p)
 		j++;
 		info->cmd_buf_type = CMD_AND;
 	}
-	else if (buf[j] == ';') /* Found end of this command */
+	else if (buf[j] == ';')
 	{
-		buf[j] = 0; /* Replace semicolon with null terminator */
+		buf[j] = 0;
 		info->cmd_buf_type = CMD_CHAIN;
 	}
 	else

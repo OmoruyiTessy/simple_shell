@@ -49,13 +49,11 @@ int string_to_integer(char *s)
 {
 	int i = 0;
 	int sign = 1;
-	int result = 0;
+	unsigned int result = 0;
 	int flag = 0;
+	int output;
 
-	if (s == NULL)
-		return (0);
-
-	while (s[i] != '\0' && flag != 2)
+	for (i = 0; s[i] != '\0' && flag != 2; i++)
 	{
 		if (s[i] == '-')
 			sign *= -1;
@@ -68,8 +66,12 @@ int string_to_integer(char *s)
 		}
 		else if (flag == 1)
 			flag = 2;
-
-		i++;
 	}
-	return (sign * result);
+
+	if (sign == -1)
+		output = -result;
+	else
+		output = result;
+
+	return (output);
 }

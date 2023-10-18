@@ -41,7 +41,7 @@ char **list_to_strings(list_t *head)
 
 	for (i = 0; node; node = node->next, i++)
 	{
-		str = custom_strdup(node->str);
+		str = malloc(custom_strlen(node->str) + 1);
 		if (!str)
 		{
 			for (j = 0; j < i; j++)
@@ -49,6 +49,7 @@ char **list_to_strings(list_t *head)
 			free(strs);
 			return (NULL);
 		}
+		str = custom_strcpy(str, node->str);
 		strs[i] = str;
 	}
 	strs[i] = NULL;

@@ -11,7 +11,7 @@ char **split_string(char *str, char *delimiters)
 	int i, j, k, m, num_words = 0;
 	char **tokens;
 
-	if (str == NULL || str[0] == '\0')
+	if (str == NULL || str[0] == 0)
 		return (NULL);
 	if (!delimiters)
 		delimiters = " ";
@@ -43,7 +43,7 @@ char **split_string(char *str, char *delimiters)
 		}
 		for (m = 0; m < k; m++)
 			tokens[j][m] = str[i++];
-		tokens[j][m] = '\0';
+		tokens[j][m] = 0;
 	}
 
 	tokens[j] = NULL;
@@ -62,7 +62,7 @@ char **split_string_by_char(char *str, char delimiter)
 	int i, j, k, m, num_words = 0;
 	char **tokens;
 
-	if (str == NULL || str[0] == '\0')
+	if (str == NULL || str[0] == 0)
 		return (NULL);
 	for (i = 0; str[i] != '\0'; i++)
 	{
@@ -92,7 +92,7 @@ char **split_string_by_char(char *str, char delimiter)
 		}
 		for (m = 0; m < k; m++)
 			tokens[j][m] = str[i++];
-		tokens[j][m] = '\0';
+		tokens[j][m] = 0;
 	}
 	tokens[j] = NULL;
 	return (tokens);

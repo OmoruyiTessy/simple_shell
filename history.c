@@ -17,7 +17,7 @@ char *get_history_file(info_t *info)
 				custom_strlen(HISTORY_FILE) + 2));
 	if (!buf)
 		return (NULL);
-	buf[0] = '\0';
+	buf[0] = 0;
 	custom_strcpy(buf, dir);
 	custom_strcat(buf, "/");
 	custom_strcat(buf, HISTORY_FILE);
@@ -32,7 +32,7 @@ char *get_history_file(info_t *info)
  */
 int write_history(info_t *info)
 {
-	int fd;
+	ssize_t fd;
 	char *filename = get_history_file(info);
 	list_t *node = NULL;
 

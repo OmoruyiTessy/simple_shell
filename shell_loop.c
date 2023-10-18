@@ -150,6 +150,12 @@ void fork_and_execute_command(info_t *info)
 	}
 	else
 	{
-		print_custom_error(info, "Permission denied\n");
+		wait(&(info->status));
+		if (WIFEXITED(info->status))
+		{
+			info->status = WEXITSTATUS(info->status);
+			if (info->status == 126)
+				print_custom_error(info, "Permission denied\n");
+		}
 	}
 }
